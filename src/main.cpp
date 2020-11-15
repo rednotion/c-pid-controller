@@ -41,10 +41,9 @@ int main() {
   vector<double> p = {0.225, 0.004, 4.0};
   vector<double> dp = {p[0]/10, p[1]/10, p[2]/10};
   double tol = 0.0005;
-  int period = 50;
+  int period = 100;
   
   pid.Init(p[0], p[1], p[2], p, dp, tol, period);
-  // twid.Init(p, dp, tol, period);
   
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
