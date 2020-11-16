@@ -18,8 +18,8 @@ class PID {
    * Initialize PID.
    * @param (Kp_, Ki_, Kd_) The initial PID coefficients
    */
-  void Init(double Kp_, double Ki_, double Kd_,
-            std::vector<double> p, std::vector<double> dp, double tol, int period);
+  void Init(//double Kp_, double Ki_, double Kd_,
+            std::vector<double> p, std::vector<double> dp, double tol, double period);
   
   // void SetParams(double Kp_, double Ki_, double Kd_);
   void TwiddleUpdate(double steer_value, double cte);
@@ -51,16 +51,18 @@ class PID {
   double Kp;
   double Ki;
   double Kd;
+  double dKp;
+  double dKi;
+  double dKd;
   
   // for twiddle
-  std::vector<double> p;
-  std::vector<double> dp;
   double tol;
-  int period;
   double total_error;
   double best_error;
   bool is_initialized;
   int n_iters;
+  int total_iters;
+  double period;
   int idx;
   bool idx_pos;
 };

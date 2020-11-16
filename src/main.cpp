@@ -41,9 +41,9 @@ int main() {
   vector<double> p = {0.225, 0.004, 4.0};
   vector<double> dp = {p[0]/10, p[1]/10, p[2]/10};
   double tol = 0.0005;
-  int period = 100;
+  double period = 100.0;
   
-  pid.Init(p[0], p[1], p[2], p, dp, tol, period);
+  pid.Init(p, dp, tol, period);
   
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
@@ -72,17 +72,16 @@ int main() {
            */
           pid.UpdateError(cte);
           steer_value = pid.TotalError();
-          pid.TwiddleUpdate(steer_value, cte);
+          pid.TwiddleUpdate(0.0, 1.0);
           
           // DEBUG
-          std::cout << "CTE: " << cte << " Steering Value: " << steer_value 
-                    << std::endl;
+          // std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
           msgJson["throttle"] = 0.3;
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
-          std::cout << msg << std::endl;
+          //std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
         }  // end "telemetry" if
       } else {
