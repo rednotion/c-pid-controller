@@ -38,7 +38,8 @@ int main() {
   /**
    * TODO: Initialize the pid variable.
    */
-  vector<double> p = {0.225, 0.004, 4.0};
+  //vector<double> p = {0.225, 0.004, 4.0};
+  vector<double> p = {0.136,0.00032,1.4};
   vector<double> dp = {p[0]/10, p[1]/10, p[2]/10};
   double tol = 0.0005;
   double period = 100.0;
@@ -64,6 +65,7 @@ int main() {
           // double speed = std::stod(j[1]["speed"].get<string>());
           // double angle = std::stod(j[1]["steering_angle"].get<string>());
           double steer_value;
+          
           /**
            * TODO: Calculate steering value here, remember the steering value is
            *   [-1, 1].
@@ -72,10 +74,10 @@ int main() {
            */
           pid.UpdateError(cte);
           steer_value = pid.TotalError();
-          pid.TwiddleUpdate(0.0, 1.0);
+          //pid.TwiddleUpdate(steer_value, cte); // switch twiddle on or off
           
           // DEBUG
-          // std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
+         // std::cout << "CTE: " << cte << " Steering Value: " << steer_value << " Throttle " << throttle << std::endl;
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;

@@ -77,7 +77,7 @@ void PID::TwiddleUpdate(double steer_value, double cte) {
     n_iters += 1;
   } else if (sum_dp > tol) {
     if (!is_initialized) {
-      std::cout<<"Initalizing twiddle"<<std::endl;
+      //std::cout<<"Initalizing twiddle"<<std::endl;
       best_error = total_error / period;
       is_initialized = true;
     } else {
@@ -85,36 +85,37 @@ void PID::TwiddleUpdate(double steer_value, double cte) {
         // best case: update error & delta, switch index
         best_error = steer_value;
         dp[idx] *= 1.1;
-        std::cout<<"Lower error for idx "<<idx<<std::endl;
-        std::cout<<"..PARAMS = "<<p[0]<<","<<p[1]<<","<<p[2]<<std::endl;
+//         std::cout<<"Lower error for idx "<<idx<<std::endl;
+//         std::cout<<"..PARAMS = "<<p[0]<<","<<p[1]<<","<<p[2]<<std::endl;
         idx = (idx + 1)%3;
-        std::cout<<"...Switching to idx "<<idx<<std::endl;
+//         std::cout<<"...Switching to idx "<<idx<<std::endl;
         idx_pos = true;
       } else {
         if (idx_pos == true) {
           // stay on the same index but switch directions & try again
           p[idx] -= 2*dp[idx];
           idx_pos = false;
-          std::cout<<"Trying negative direction for idx "<<idx<<std::endl;
+//           std::cout<<"Trying negative direction for idx "<<idx<<std::endl;
         } else {
           // reset p, lower delta and switch index
-          std::cout<<"Gave up on idx "<<idx<<std::endl;
-          std::cout<<"...resetting params to "<<p[0]<<","<<p[1]<<","<<p[2]<<std::endl;
+//           std::cout<<"Gave up on idx "<<idx<<std::endl;
+//           std::cout<<"...resetting params to "<<p[0]<<","<<p[1]<<","<<p[2]<<std::endl;
           p[idx] += dp[idx];
           dp[idx] *= 0.9;
           idx = (idx+1)%3;
           idx_pos = true;
-          std::cout<<"...Switching to idx "<<idx<<std::endl;
+//           std::cout<<"...Switching to idx "<<idx<<std::endl;
         }
       }
     }
     n_iters = 0;
   } else {
-     std::cout<<"We have reached below tol.. ending twiddle"<<std::endl;
+//      std::cout<<"We have reached below tol.. ending twiddle"<<std::endl;
   }
   
   if (total_iters % 200 == 0) {
     std::cout<<"Current iters = "<<total_iters<<std::endl;
+    std::cout<<"...params are"<<p[0]<<","<<p[1]<<","<<p[2]<<std::endl;
   }
   
   Kp = p[0];
